@@ -135,6 +135,7 @@ function publicState(room, socket) {
     } : null,
     answeredCount: players.reduce((sum, player) => sum + player.answeredCount, 0),
     connectedCount: [...room.players.values()].filter((player) => player.online).length,
+    pendingQuestionCount: room.pendingQuestions.size,
     myAnswer: currentPlayer?.currentAnswer || null,
     myStealTokens: currentPlayer?.stealTokens || 0,
     finalRevealCount: room.finalRevealCount,
@@ -143,6 +144,17 @@ function publicState(room, socket) {
   if (currentPlayer?.currentAnswer && currentPlayer.currentQuestion) {
     state.correctAnswer = currentPlayer.currentQuestion.options[currentPlayer.currentQuestion.answer];
     state.explanation = currentPlayer.currentQuestion.explain;
+  }
+  if (client?.role === 'teacher') {
+    state.pendingQuestions = [...room.pendingQuestions.values()].map((question) => ({
+      id: question.id,
+      studentName: question.studentName,
+      subject: question.subject,
+      difficulty: question.difficulty,
+      text: question.text,
+      answer: question.options[question.answer],
+      explanation: question.explain,
+    }));
   }
   return state;
 }
@@ -157,6 +169,13 @@ function broadcast(room) {
 
 function errorTo(socket, message) {
   send(socket, 'error', { message });
+}
+
+function notifyStudent(room, studentId, message) {
+  for (const socket of room.connections) {
+    const client = clients.get(socket);
+    if (client?.role === 'student' && client.id === studentId) send(socket, 'questionSubmissionUpdate', message);
+  }
 }
 
 function cancelPlayerTimer(player) {
@@ -298,6 +317,7 @@ wss.on('connection', (socket) => {
         players: new Map(),
         connections: new Set(),
         customQuestions: [],
+        pendingQuestions: new Map(),
         questionEdits: new Map(),
         deletedQuestionIds: new Set(),
         selectedQuestionIds: new Set(),
@@ -331,6 +351,56 @@ wss.on('connection', (socket) => {
     const room = roomFor(socket);
     const client = clients.get(socket);
     if (!room || !client) return errorTo(socket, '먼저 방에 입장해 주세요.');
+
+    if (message.type === 'submitQuestion') {
+      if (client.role !== 'student') return errorTo(socket, '학생 계정으로 입장한 뒤 문제를 제안해 주세요.');
+      if (room.status === 'finished') return errorTo(socket, '복습이 끝난 뒤에는 문제를 제안할 수 없어요.');
+      if (room.pendingQuestions.size >= 30) return errorTo(socket, '승인 대기 중인 문제가 많아요. 선생님이 확인할 때까지 기다려 주세요.');
+      const question = questionFromMessage(message);
+      if (!question) return errorTo(socket, '과목, 난이도, 문제와 정답을 모두 입력해 주세요.');
+      if (!questionMatchesRoom(room, question)) return errorTo(socket, '이 교실 과목과 난이도에 맞는 문제를 제안해 주세요.');
+      const duplicatePending = [...room.pendingQuestions.values()].some((item) => normalizeAnswer(item.text) === normalizeAnswer(question.text));
+      if (hasDuplicateQuestion(room, question.text) || duplicatePending) return errorTo(socket, '같은 문제가 이미 출제 목록이나 승인 대기 목록에 있어요.');
+      const id = `submission-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      room.pendingQuestions.set(id, { ...question, id, studentId: client.id, studentName: room.players.get(client.id)?.name || client.name });
+      send(socket, 'questionSubmissionResult', { notice: '선생님께 문제를 보냈어요. 승인되면 복습에 들어가요.' });
+      broadcast(room);
+      return;
+    }
+
+    if (message.type === 'approveStudentQuestion' || message.type === 'rejectStudentQuestion') {
+      if (client.role !== 'teacher') return errorTo(socket, '학생 문제 검토는 선생님만 할 수 있어요.');
+      if (room.status === 'finished') return errorTo(socket, '종료한 교실에서는 학생 문제를 검토할 수 없어요.');
+      const id = String(message.id || '');
+      const submission = room.pendingQuestions.get(id);
+      if (!submission) return errorTo(socket, '검토할 문제가 목록에서 사라졌어요.');
+      if (message.type === 'approveStudentQuestion') {
+        if (room.customQuestions.length >= 60) return errorTo(socket, '이 교실에는 문제를 60개까지 담을 수 있어요.');
+        if (hasDuplicateQuestion(room, submission.text)) return errorTo(socket, '같은 문제가 이미 출제 목록에 있어요.');
+      }
+      room.pendingQuestions.delete(id);
+      if (message.type === 'approveStudentQuestion') {
+        const approvedQuestion = {
+          subject: submission.subject,
+          difficulty: submission.difficulty,
+          text: submission.text,
+          options: submission.options,
+          answer: submission.answer,
+          explain: submission.explain,
+          id: `student-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          custom: true,
+        };
+        room.customQuestions.push(approvedQuestion);
+        room.selectedQuestionIds.add(approvedQuestion.id);
+        room.priorityQuestionIds.unshift(approvedQuestion.id);
+        notifyStudent(room, submission.studentId, { status: 'approved', notice: '선생님이 문제를 승인했어요. 복습 문제에 추가됐어요!' });
+      } else {
+        notifyStudent(room, submission.studentId, { status: 'rejected', notice: '선생님이 문제를 확인했어요. 다른 문제도 만들어 볼까요?' });
+      }
+      broadcast(room);
+      if (message.type === 'approveStudentQuestion') send(socket, 'questionCatalog', { questions: questionCatalog(room) });
+      return;
+    }
 
     if (message.type === 'getQuestions') {
       if (client.role !== 'teacher') return errorTo(socket, '문제 관리는 선생님만 사용할 수 있어요.');
@@ -441,6 +511,10 @@ wss.on('connection', (socket) => {
         broadcast(room);
       } else if (message.type === 'stop' && room.status !== 'finished') {
         for (const player of room.players.values()) cancelPlayerTimer(player);
+        for (const submission of room.pendingQuestions.values()) {
+          notifyStudent(room, submission.studentId, { status: 'rejected', notice: '복습이 종료되어 문제를 검토하지 못했어요. 다음 교실에서 다시 제안해 주세요.' });
+        }
+        room.pendingQuestions.clear();
         room.status = 'finished';
         room.finalRevealCount = 0;
         broadcast(room);

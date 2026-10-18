@@ -26,6 +26,8 @@ const lastKnownScores = new Map();
 let stealPending = false;
 let stealNotice = '';
 let selectedStealTargetId = '';
+let studentQuestionPending = false;
+let studentQuestionStatus = '';
 
 function clientId() {
   let id = localStorage.getItem('reviewClientId');
@@ -87,6 +89,17 @@ function connect() {
       stealNotice = `${message.targetName}에게서 ${formatScore(message.amount)}점을 가져왔어요!`;
       renderRoom();
     }
+    if (message.type === 'questionSubmissionResult') {
+      studentQuestionPending = false;
+      studentQuestionStatus = message.notice;
+      document.querySelector('#studentQuestionForm').reset();
+      configureStudentQuestionForm();
+      renderRoom();
+    }
+    if (message.type === 'questionSubmissionUpdate') {
+      studentQuestionStatus = message.notice;
+      renderRoom();
+    }
     if (message.type === 'questionCatalog') {
       teacherQuestions = message.questions;
       if (message.resetForm) {
@@ -104,6 +117,12 @@ function connect() {
       renderQuestionCatalog();
     }
     if (message.type === 'error') {
+      if (studentQuestionPending) {
+        studentQuestionPending = false;
+        studentQuestionStatus = message.message;
+        renderRoom();
+        return;
+      }
       if (stealPending) {
         stealPending = false;
         stealNotice = message.message;
@@ -183,6 +202,8 @@ studentForm.addEventListener('submit', (event) => {
   stealNotice = '';
   stealPending = false;
   selectedStealTargetId = '';
+  studentQuestionStatus = '';
+  studentQuestionPending = false;
   session = { role: 'student', roomCode, name };
   send({ type: 'join', ...session, clientId: clientId() });
 });
@@ -257,12 +278,32 @@ document.querySelector('#customQuestionForm').addEventListener('submit', (event)
     explanation: document.querySelector('#customQuestionExplanation').value.trim(),
   });
 });
+document.querySelector('#studentQuestionForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  studentQuestionPending = true;
+  studentQuestionStatus = '문제를 선생님께 보내고 있어요...';
+  renderStudentQuestionPanel();
+  send({
+    type: 'submitQuestion',
+    subject: document.querySelector('#studentQuestionSubject').value,
+    difficulty: document.querySelector('#studentQuestionDifficulty').value,
+    text: document.querySelector('#studentQuestionText').value.trim(),
+    answer: document.querySelector('#studentQuestionAnswer').value.trim(),
+    explanation: document.querySelector('#studentQuestionExplanation').value.trim(),
+  });
+});
 document.querySelector('#cancelQuestionEdit').addEventListener('click', cancelQuestionEdit);
 document.querySelector('#selectAllQuestions').addEventListener('click', () => {
   send({ type: 'setQuestionSelection', ids: teacherQuestions.map((question) => question.id) });
 });
 document.querySelector('#clearQuestionSelection').addEventListener('click', () => {
   send({ type: 'setQuestionSelection', ids: [] });
+});
+document.querySelector('#pendingQuestionList').addEventListener('click', (event) => {
+  const button = event.target.closest('[data-moderate-question]');
+  if (!button) return;
+  const messageType = button.dataset.action === 'approve' ? 'approveStudentQuestion' : 'rejectStudentQuestion';
+  send({ type: messageType, id: button.dataset.moderateQuestion });
 });
 document.querySelector('#copyCodeButton').addEventListener('click', async () => {
   if (!roomState) return;
@@ -442,6 +483,38 @@ function prepareQuestionForm() {
     : '복습이 진행 중이거나 종료되어 문제 구성이 잠겼어요. 다음 방을 만들 때 다시 편집할 수 있어요.';
 }
 
+function configureStudentQuestionForm() {
+  const subject = document.querySelector('#studentQuestionSubject');
+  const difficulty = document.querySelector('#studentQuestionDifficulty');
+  for (const option of subject.options) {
+    option.disabled = roomState.settings.subject !== 'mixed' && option.value !== roomState.settings.subject;
+  }
+  for (const option of difficulty.options) {
+    option.disabled = roomState.settings.difficulty !== 'mixed' && option.value !== roomState.settings.difficulty;
+  }
+  if (roomState.settings.subject !== 'mixed') subject.value = roomState.settings.subject;
+  if (roomState.settings.difficulty !== 'mixed') difficulty.value = roomState.settings.difficulty;
+}
+
+function renderStudentQuestionPanel() {
+  const canSubmit = roomState.status !== 'finished';
+  document.querySelector('#studentQuestionPanel').classList.toggle('hidden', roomState.role !== 'student' || !canSubmit);
+  document.querySelector('#studentQuestionStatus').textContent = studentQuestionStatus;
+  document.querySelector('#submitStudentQuestionButton').disabled = studentQuestionPending;
+  if (!canSubmit) document.querySelector('#studentQuestionStatus').textContent = '복습이 끝난 뒤에는 문제를 제안할 수 없어요.';
+}
+
+function renderPendingQuestionInbox() {
+  const teacher = roomState.role === 'teacher';
+  const questions = roomState.pendingQuestions || [];
+  const show = teacher && roomState.status !== 'finished';
+  const list = document.querySelector('#pendingQuestionList');
+  document.querySelector('#pendingQuestionInbox').classList.toggle('hidden', !show);
+  document.querySelector('#pendingQuestionCount').textContent = `${questions.length}개`;
+  document.querySelector('#pendingQuestionEmpty').classList.toggle('hidden', questions.length > 0);
+  list.innerHTML = questions.map((question) => `<article class="pending-question-card"><div class="pending-question-meta"><span class="catalog-tag ${question.subject === '수학' ? 'math' : 'social'}">${question.subject}</span><span class="catalog-tag ${question.difficulty === '어려움' ? 'hard' : ''}">${question.difficulty}</span><span class="pending-author">${escapeHtml(question.studentName)} 제안</span></div><h3>${escapeHtml(question.text)}</h3><p class="pending-answer"><span>정답</span>${escapeHtml(question.answer)}</p><p class="catalog-explanation">${escapeHtml(question.explanation)}</p><div class="pending-actions"><button type="button" data-moderate-question="${escapeHtml(question.id)}" data-action="reject">보류</button><button type="button" data-moderate-question="${escapeHtml(question.id)}" data-action="approve">승인하고 출제</button></div></article>`).join('');
+}
+
 function renderFinalReveal(teacher) {
   const finished = roomState.status === 'finished';
   const section = document.querySelector('#finalReveal');
@@ -508,6 +581,9 @@ function renderRoom() {
   document.querySelector('#manageQuestionsButton').textContent = questionManagerOpen ? '문제 관리 닫기' : '문제은행 구성';
   renderLeaderboard();
   if (teacher) renderTeacherDashboard();
+  renderStudentQuestionPanel();
+  renderPendingQuestionInbox();
+  if (!teacher) configureStudentQuestionForm();
   document.querySelector('#teacherLivePanel').classList.toggle('hidden', !teacher || !active);
   if (teacher && active) renderTeacherLive();
   document.querySelector('#studentPowerPanel').classList.toggle('hidden', teacher || roomState.status !== 'active');

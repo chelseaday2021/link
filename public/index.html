@@ -144,6 +144,18 @@
             <div id="powerControls" class="power-controls hidden"><label for="stealTarget">점수를 가져올 친구</label><select id="stealTarget"></select><button id="stealButton" class="power-button" type="button">최대 2점 가져오기 <span>✦</span></button></div>
             <p id="powerMessage" class="power-message" aria-live="polite"></p>
           </section>
+          <section id="studentQuestionPanel" class="student-question-panel hidden">
+            <div class="student-question-heading"><span class="student-question-icon" aria-hidden="true">?</span><div><p class="section-kicker">내가 선생님이라면?</p><h2>문제 제안하기</h2></div></div>
+            <p class="student-question-intro">직접 만든 문제를 보내보세요. 선생님이 승인하면 복습 문제에 들어가요.</p>
+            <form id="studentQuestionForm" class="student-question-form">
+              <div class="student-question-selects"><label>과목<select id="studentQuestionSubject"><option value="사회">사회</option><option value="수학">수학</option></select></label><label>난이도<select id="studentQuestionDifficulty"><option value="보통">보통</option><option value="어려움">어려움</option></select></label></div>
+              <label for="studentQuestionText">문제<textarea id="studentQuestionText" maxlength="240" rows="3" placeholder="친구들이 풀 문제를 적어주세요" required></textarea></label>
+              <label for="studentQuestionAnswer">정답<input id="studentQuestionAnswer" type="text" maxlength="100" placeholder="정답을 적어주세요" required></label>
+              <label for="studentQuestionExplanation">해설 <span class="optional-label">선택</span><textarea id="studentQuestionExplanation" maxlength="300" rows="2" placeholder="풀이 방법을 적어주세요"></textarea></label>
+              <button id="submitStudentQuestionButton" class="student-question-button" type="submit">선생님께 문제 보내기 <span>→</span></button>
+              <p id="studentQuestionStatus" class="student-question-status" aria-live="polite"></p>
+            </form>
+          </section>
           <section id="teacherOverview" class="teacher-overview hidden" aria-live="polite">
             <div class="scoreboard-heading"><div><p class="section-kicker">실시간 관리</p><h2>교실 컨트롤타워</h2></div><span id="teacherOnlineCount" class="player-count">0명</span></div>
             <div class="teacher-metrics">
@@ -166,6 +178,12 @@
           </table>
           <p id="emptyTeacherRows" class="empty-teacher-rows">아직 참여한 학생이 없어요.</p>
         </div>
+      </section>
+      <section id="pendingQuestionInbox" class="pending-question-inbox hidden" aria-live="polite">
+        <div class="pending-question-heading"><div><p class="section-kicker">학생 제안 확인</p><h2>승인 대기 문제</h2></div><span id="pendingQuestionCount" class="pending-question-count">0개</span></div>
+        <p class="pending-question-intro">문제를 확인한 뒤 승인하면 다음 문제로 출제돼요. 승인 전까지는 출제되지 않아요.</p>
+        <div id="pendingQuestionList" class="pending-question-list"></div>
+        <p id="pendingQuestionEmpty" class="pending-question-empty">아직 학생이 제안한 문제가 없어요.</p>
       </section>
       <section id="questionManager" class="question-manager hidden">
         <div class="question-manager-heading"><div><p class="section-kicker">시작 전 문제 구성</p><h2>이번 복습 문제은행</h2></div><button id="closeQuestionsButton" class="quiet-button" type="button">닫기</button></div>

@@ -488,3 +488,40 @@ body { background: radial-gradient(ellipse at 50% 4%, #3d2c22 0, #211b22 58%); }
   .topbar-right { gap: 4px; }
   .connection-pill { padding: 7px 9px; font-size: 10px; }
 }
+.student-question-panel { margin-top: 12px; padding: 16px; border: 1px solid #c8d9bd; border-radius: 18px; background: linear-gradient(150deg, #f5fae9, #fffaf0); box-shadow: 0 8px 24px #14241918; }
+.student-question-heading { display: flex; align-items: center; gap: 9px; }
+.student-question-icon { display: grid; width: 35px; height: 35px; place-items: center; border-radius: 11px; background: #dcebc9; color: #547647; font: 21px 'Jua', sans-serif; }
+.student-question-heading .section-kicker { color: #698751; font-size: 9px; }
+.student-question-heading h2 { margin: 3px 0 0; color: #415638; font: 16px 'Jua', sans-serif; }
+.student-question-intro { margin: 11px 0; color: #718166; font-size: 10px; line-height: 1.55; }
+.student-question-form { display: flex; flex-direction: column; gap: 7px; }
+.student-question-form > label, .student-question-selects label { display: flex; flex-direction: column; gap: 5px; color: #657153; font-size: 10px; font-weight: bold; }
+.student-question-selects { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.student-question-form input, .student-question-form select, .student-question-form textarea { width: 100%; min-width: 0; min-height: 38px; padding: 8px 9px; border: 1px solid #dce5d0; border-radius: 8px; outline: none; background: #fffefa; color: #403f30; font: 11px 'Gowun Dodum', sans-serif; resize: vertical; }
+.student-question-form textarea { min-height: 53px; line-height: 1.5; }
+.student-question-form input:focus, .student-question-form select:focus, .student-question-form textarea:focus { border-color: #83a76b; box-shadow: 0 0 0 3px #83a76b24; }
+.student-question-button { min-height: 39px; border: 1px solid #72915b; border-radius: 9px; background: #75945d; color: #fffdec; font: 13px 'Jua', sans-serif; }
+.student-question-button:disabled { cursor: default; opacity: .55; }
+.student-question-button span { margin-left: 4px; font-size: 17px; }
+.student-question-status { min-height: 15px; margin: 0; color: #4e8053; font-size: 10px; line-height: 1.5; }
+.pending-question-inbox { margin-top: 17px; padding: 22px 24px; border: 1px solid #d8c28c; border-radius: 20px; background: #fff8e5; box-shadow: 0 10px 30px #08090e20; }
+.pending-question-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pending-question-heading h2 { margin: 4px 0 0; color: #4e3b1b; font: 22px 'Jua', sans-serif; }
+.pending-question-count { padding: 6px 9px; border-radius: 9px; background: #edd99f; color: #80591b; font-size: 11px; font-weight: bold; }
+.pending-question-intro { margin: 9px 0 14px; color: #806e49; font-size: 11px; line-height: 1.55; }
+.pending-question-list { display: flex; flex-direction: column; gap: 9px; }
+.pending-question-card { padding: 13px 14px; border: 1px solid #ead9b4; border-radius: 13px; background: #fffdf6; }
+.pending-question-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.pending-author { margin-left: auto; color: #927d55; font-size: 10px; }
+.pending-question-card h3 { margin: 9px 0 7px; color: #4d402a; font-size: 13px; line-height: 1.55; }
+.pending-answer { display: flex; gap: 8px; margin: 0; color: #437853; font-size: 11px; font-weight: bold; }
+.pending-answer span { color: #978767; font-weight: normal; }
+.pending-actions { display: flex; justify-content: flex-end; gap: 7px; margin-top: 11px; }
+.pending-actions button { min-height: 36px; padding: 0 12px; border: 1px solid #e4d5b8; border-radius: 9px; background: #fffefa; color: #79633a; font-size: 11px; }
+.pending-actions button[data-action="approve"] { border-color: #798f58; background: #789256; color: white; font-weight: bold; }
+.pending-question-empty { margin: 0; padding: 20px; border: 1px dashed #decea7; border-radius: 12px; color: #8d7b58; text-align: center; font-size: 11px; }
+@media (max-width: 680px) {
+  .student-question-panel { padding: 14px; }
+  .pending-question-inbox { margin-top: 13px; padding: 17px 14px; border-radius: 17px; }
+  .pending-question-heading h2 { font-size: 20px; }
+}
