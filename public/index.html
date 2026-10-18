@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#211b22">
+  <title>같이풀자! | 함께하는 복습 교실</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="같이풀자 처음으로">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M8 10.5c4.3-2 9-1.8 12 1.1v19c-3-2.9-7.7-3.1-12-1.1v-19Zm24 0c-4.3-2-9-1.8-12 1.1v19c3-2.9 7.7-3.1 12-1.1v-19Z"/><path d="M20 12v19"/></svg></span>
+      <span>같이풀자<span class="brand-dot">!</span></span>
+    </a>
+    <div class="topbar-right"><span id="routeBadge" class="route-badge hidden"></span><div class="connection-pill"><span class="connection-dot"></span><span id="connectionText">연결 확인 중</span></div></div>
+  </header>
+
+  <main>
+    <section id="entryView" class="entry-view">
+      <div class="intro">
+        <div class="eyebrow"><span class="sparkle">✦</span> 6학년 오늘의 복습</div>
+        <h1>같이 풀면<br><span>더 재미있어!</span></h1>
+        <p class="intro-copy">사회와 수학, 친구들과 함께 풀고<br class="desktop-break"> 실시간으로 점수를 모아봐요.</p>
+        <div class="subject-stickers" aria-label="복습 과목">
+          <span class="sticker sticker-math"><span class="sticker-icon">＋</span> 수학</span>
+          <span class="sticker sticker-social"><span class="sticker-icon">◎</span> 사회</span>
+          <span class="sticker sticker-star">연속 정답 보너스 <b>+0.5</b></span>
+        </div>
+        <div class="doodle d1" aria-hidden="true">✳</div>
+        <div class="doodle d2" aria-hidden="true">⌁</div>
+      </div>
+
+      <div class="entry-card">
+        <div class="card-heading">
+          <span class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M18.8 6.2c3.3-2.4 7.4-2.1 7.4-2.1s.3 4.1-2.1 7.4l-7.6 10.2-7.8-7.8 10.1-7.7Z"/><path d="m13.1 10.7-4.7.2-3.1 3.1 6.2 1.6m9.7 1.1-.2 4.7-3.1 3.1-1.6-6.2M9.8 19.2c-2.4.6-3.7 2.5-3.7 4.7 2.2 0 4.1-1.3 4.7-3.7m8.6-8.6h.1"/></svg></span>
+          <div><h2>복습 교실에 들어가요</h2><p>선생님은 새 교실을, 학생은 코드를 입력해요.</p></div>
+        </div>
+        <div id="modeTabs" class="mode-tabs" role="tablist" aria-label="참여 방법">
+          <button class="mode-tab active" type="button" data-mode="student" role="tab" aria-selected="true">학생으로 참여</button>
+          <button class="mode-tab" type="button" data-mode="teacher" role="tab" aria-selected="false">선생님 방 만들기</button>
+        </div>
+        <form id="studentForm" class="entry-form">
+          <label for="studentName">내 이름</label>
+          <input id="studentName" name="name" maxlength="18" placeholder="예: 민지" autocomplete="nickname" required>
+          <label for="roomCode">교실 코드</label>
+          <input id="roomCode" name="code" class="code-input" inputmode="numeric" maxlength="6" placeholder="숫자 6자리" required>
+          <button class="primary-button" type="submit">교실 입장하기 <span>→</span></button>
+          <p class="form-note">선생님에게 받은 6자리 코드를 입력해 주세요.</p>
+        </form>
+        <form id="teacherForm" class="entry-form hidden">
+          <label for="teacherName">선생님 이름</label>
+          <input id="teacherName" name="name" maxlength="18" placeholder="예: 김선생님" required>
+          <div class="select-row">
+            <div><label for="subjectSelect">과목</label><select id="subjectSelect"><option value="mixed">사회 + 수학 섞기</option><option value="사회">사회만</option><option value="수학">수학만</option></select></div>
+            <div><label for="difficultySelect">난이도</label><select id="difficultySelect"><option value="mixed">보통 + 어려움</option><option value="보통">보통만</option><option value="어려움">어려움만</option></select></div>
+          </div>
+          <button class="primary-button" type="submit">새 교실 만들기 <span>→</span></button>
+          <p class="form-note">학생들과 공유할 교실 코드가 만들어져요.</p>
+        </form>
+        <p id="entryError" class="error-message" role="alert"></p>
+      </div>
+      <div class="how-it-works"><span>01 이름 정하기</span><i></i><span>02 코드로 모이기</span><i></i><span>03 함께 도전!</span></div>
+    </section>
+
+    <section id="roomView" class="room-view hidden" aria-live="polite">
+      <div class="room-topline">
+        <div class="room-identity"><span class="room-icon">✦</span><div><p class="room-kicker" id="roomGreeting">복습 교실</p><h1><span id="roomCodeDisplay">------</span><span class="room-label">교실</span></h1></div></div>
+        <div class="room-actions">
+          <span id="roomStatus" class="status-badge">친구를 기다리는 중</span>
+          <button id="copyCodeButton" class="quiet-button" type="button">코드 복사</button>
+          <button id="copyStudentLinkButton" class="quiet-button hidden" type="button">학생 링크 복사</button>
+        </div>
+      </div>
+
+      <div class="game-layout">
+        <section class="game-main">
+          <div id="lobbyPanel" class="lobby-panel hidden">
+            <div class="lobby-art" aria-hidden="true"><span class="art-book">▰</span><span class="art-pencil">✎</span><span class="art-star">✦</span><span class="art-spark">✳</span></div>
+            <p class="section-kicker">준비되면 시작해요</p>
+            <h2 id="lobbyTitle">친구들을 기다리고 있어요!</h2>
+            <p id="lobbyCopy">참여 코드로 친구들을 초대한 뒤 시작 버튼을 눌러주세요.</p>
+            <div id="teacherLobbyControls" class="teacher-controls hidden">
+              <div class="lobby-settings"><span id="roomSubject">사회 + 수학</span><span id="roomDifficulty">보통 + 어려움</span><span id="roomQuestionCount">20개 선택</span></div>
+              <button id="startButton" class="primary-button start-button" type="button">선택한 문제로 시작하기 <span>→</span></button>
+            </div>
+          </div>
+
+          <div id="questionPanel" class="question-panel hidden">
+            <div class="question-meta"><span id="questionSubject" class="subject-tag">수학</span><span id="questionDifficulty" class="difficulty-tag">보통</span><span id="questionNumber" class="question-count">문제 1</span></div>
+            <div class="question-progress"><span id="progressBar"></span></div>
+            <h2 id="questionText" class="question-text"></h2>
+            <form id="answerForm" class="answer-form">
+              <label class="answer-label" for="answerInput">내 답을 직접 적어보세요</label>
+              <div class="answer-entry"><input id="answerInput" type="text" maxlength="100" autocomplete="off" placeholder="여기에 답을 입력해 주세요" required><button class="primary-button" type="submit">정답 제출 <span>→</span></button></div>
+              <p class="answer-hint">띄어쓰기와 단위가 조금 달라도 괜찮아요.</p>
+            </form>
+            <div id="answerFeedback" class="answer-feedback" aria-live="assertive"></div>
+            <div id="explanationBox" class="explanation-box hidden"></div>
+          </div>
+
+          <div id="teacherLivePanel" class="teacher-live-panel hidden" aria-live="polite">
+            <div class="live-pickaxe" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="m8 13 6-6c8 6 18 6 25 0l3 5c-5 6-12 9-20 8l-6 20-6-2 7-20c-4-1-7-3-9-5Z"/></svg></div>
+            <p class="section-kicker">자율 진행 모드</p>
+            <h2>각자 자기 속도로 풀어요!</h2>
+            <p>답을 제출하면 다른 친구를 기다리지 않고 바로 다음 문제로 넘어갑니다.</p>
+            <div class="teacher-live-stats"><span>문제 푸는 중 <b id="teacherLiveWorkingCount">0명</b></span><span>지금까지 푼 문제 <b id="teacherLiveSolvedCount">0개</b></span></div>
+            <div class="teacher-answer-preview"><span>학생 화면에는 이 답안 입력칸이 보여요</span><div class="answer-entry"><input type="text" placeholder="학생은 여기에 답을 입력해요" disabled><button class="primary-button" type="button" disabled>정답 제출 <span>→</span></button></div></div>
+            <button id="teacherStopLiveButton" class="stop-button" type="button">복습 종료</button>
+          </div>
+
+          <div id="finishedPanel" class="finished-panel hidden">
+            <div class="finished-confetti" aria-hidden="true">✦ ✳ ✦</div>
+            <p class="section-kicker">오늘의 복습 완료</p>
+            <h2>모두 정말 잘했어요!</h2>
+            <p>함께 푼 문제와 점수를 확인해 보세요.</p>
+            <div id="finalReveal" class="final-reveal hidden" aria-live="polite">
+              <p class="final-top-five-heading">선생님 최종 순위 · TOP 5</p>
+              <p id="finalRevealStatus" class="final-reveal-status"></p>
+              <div id="finalRevealCard" class="final-reveal-card hidden"><span id="finalRevealRank" class="final-reveal-rank"></span><strong id="finalRevealName" class="final-reveal-name"></strong><span id="finalRevealStats" class="final-reveal-stats"></span></div>
+              <ol id="finalRevealHistory" class="final-reveal-history"></ol>
+              <button id="finalRevealButton" class="primary-button final-reveal-button hidden" type="button">5등 공개하기 <span>→</span></button>
+            </div>
+            <button id="backButton" class="quiet-button" type="button">처음 화면으로</button>
+          </div>
+        </section>
+
+        <aside class="scoreboard">
+          <section id="studentScoreboard" class="student-scoreboard">
+            <div class="scoreboard-heading"><div><p class="section-kicker">함께 달리는 중</p><h2>실시간 순위</h2></div><span id="playerCount" class="player-count">0명</span></div>
+            <div id="leaderboard" class="leaderboard"></div>
+            <div id="emptyPlayers" class="empty-players"><span class="empty-people">♧</span><p>아직 참여한 친구가 없어요.<br>코드를 알려주세요!</p></div>
+            <div class="score-tip"><span class="score-spark" aria-hidden="true">✦</span><p>정답 점수 · 보통 3~5점 / 어려움 4~6점<br><b>연속 정답마다 보너스 +0.5점</b></p></div>
+          </section>
+          <section id="studentPowerPanel" class="student-power-panel hidden" aria-live="polite">
+            <div class="power-heading"><span class="power-gem" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="m5 11 5-6h12l5 6-11 16L5 11Z"/><path d="m5 11h22M10 5l3 6 3 16 3-16 3-6"/></svg></span><div><p class="section-kicker">깜짝 보너스</p><h2>점수 빼앗기 특권</h2></div><span id="powerTokenCount" class="power-token-count">0개</span></div>
+            <p id="powerHint" class="power-hint">정답을 맞히면 15% 확률로 특권을 얻어요.</p>
+            <div id="powerControls" class="power-controls hidden"><label for="stealTarget">점수를 가져올 친구</label><select id="stealTarget"></select><button id="stealButton" class="power-button" type="button">최대 2점 가져오기 <span>✦</span></button></div>
+            <p id="powerMessage" class="power-message" aria-live="polite"></p>
+          </section>
+          <section id="teacherOverview" class="teacher-overview hidden" aria-live="polite">
+            <div class="scoreboard-heading"><div><p class="section-kicker">실시간 관리</p><h2>교실 컨트롤타워</h2></div><span id="teacherOnlineCount" class="player-count">0명</span></div>
+            <div class="teacher-metrics">
+              <div class="teacher-metric"><span>누적 풀이</span><b id="teacherSolvedCount">0</b><small>문제</small></div>
+              <div class="teacher-metric"><span>맞힌 문제</span><b id="teacherCorrectCount">0</b><small>문제</small></div>
+              <div class="teacher-metric"><span>전체 정답률</span><b id="teacherAccuracy">0%</b></div>
+              <div class="teacher-metric"><span>문제 풀이 중</span><b id="teacherQuestionNumber">0명</b></div>
+            </div>
+            <p class="teacher-overview-note">학생별 자세한 성적과 순위는 아래 전체 성적표에서 확인하세요.</p>
+            <button id="manageQuestionsButton" class="quiet-button manage-questions-button" type="button">문제 미리보기 · 직접 추가</button>
+          </section>
+        </aside>
+      </div>
+      <section id="teacherDashboard" class="teacher-dashboard hidden" aria-live="polite">
+        <div class="teacher-dashboard-heading"><div><p class="section-kicker">전체 학생 현황</p><h2>전체 등수 및 정답률</h2></div><label for="teacherSortSelect">정렬 기준<select id="teacherSortSelect"><option value="score">점수 높은 순</option><option value="accuracy">정답률 높은 순</option></select></label></div>
+        <div class="teacher-table-wrap">
+          <table class="teacher-table">
+            <thead><tr><th scope="col">등수</th><th scope="col">이름</th><th scope="col">점수</th><th scope="col">푼 문제</th><th scope="col">맞힌 문제</th><th scope="col">정답률</th></tr></thead>
+            <tbody id="teacherRankRows"></tbody>
+          </table>
+          <p id="emptyTeacherRows" class="empty-teacher-rows">아직 참여한 학생이 없어요.</p>
+        </div>
+      </section>
+      <section id="questionManager" class="question-manager hidden">
+        <div class="question-manager-heading"><div><p class="section-kicker">시작 전 문제 구성</p><h2>이번 복습 문제은행</h2></div><button id="closeQuestionsButton" class="quiet-button" type="button">닫기</button></div>
+        <p id="questionManagerIntro" class="question-manager-intro">출제할 문제를 고르고, 기존 문제를 수정·삭제하거나 새 문제를 추가해 복습을 구성하세요. 변경은 이 교실에만 적용돼요.</p>
+        <div class="question-manager-layout">
+          <form id="customQuestionForm" class="custom-question-form">
+            <input id="editQuestionId" type="hidden" value="">
+            <h3 id="customFormHeading">문제 직접 추가</h3>
+            <div class="custom-select-row"><div><label for="customSubject">과목</label><select id="customSubject"><option value="사회">사회</option><option value="수학">수학</option></select></div><div><label for="customDifficulty">난이도</label><select id="customDifficulty"><option value="보통">보통</option><option value="어려움">어려움</option></select></div></div>
+            <label for="customQuestionText">문제</label><textarea id="customQuestionText" maxlength="240" rows="3" placeholder="문제 내용을 입력해 주세요" required></textarea>
+            <label for="customQuestionAnswer">정답</label><input id="customQuestionAnswer" type="text" maxlength="100" placeholder="정답을 입력해 주세요" required>
+            <label for="customQuestionExplanation">해설 <span class="optional-label">선택</span></label><textarea id="customQuestionExplanation" maxlength="300" rows="2" placeholder="정답 해설을 적어주세요"></textarea>
+            <button id="saveQuestionButton" class="primary-button" type="submit">문제 추가하기 <span>＋</span></button>
+            <button id="cancelQuestionEdit" class="quiet-button hidden" type="button">수정 취소</button>
+            <p id="questionManagerMessage" class="question-manager-message" aria-live="polite"></p>
+          </form>
+          <div class="question-catalog">
+            <div class="catalog-heading"><h3>출제 문제 목록</h3><span id="questionCatalogCount">0문제</span></div>
+            <div class="question-selection-actions"><p id="questionSelectionSummary">0문제 선택</p><div><button id="selectAllQuestions" class="quiet-button" type="button">모두 선택</button><button id="clearQuestionSelection" class="quiet-button" type="button">선택 해제</button></div></div>
+            <div id="questionList" class="question-list"></div>
+            <p id="emptyQuestionList" class="empty-question-list hidden">현재 설정에 맞는 문제가 없어요.</p>
+          </div>
+        </div>
+      </section>
+      <p class="room-footnote">답은 한 문제에 한 번만 제출할 수 있어요. 같이 도전해 봐요!</p>
+      <p id="roomError" class="error-message room-error" role="alert"></p>
+    </section>
+  </main>
+  <footer>오늘의 복습도 우리답게, 같이풀자!</footer>
+</body>
+</html>

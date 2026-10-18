@@ -1,0 +1,206 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - link "같이풀자 처음으로" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - img [ref=e5]
+      - generic [ref=e7]: 같이풀자!
+    - generic [ref=e10]: 실시간 연결됨
+  - main [ref=e11]:
+    - generic [ref=e52]:
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - generic [ref=e55]: ✦
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: 문제은행 확인 선생님의 교실
+            - heading "101158교실" [level=1] [ref=e58]
+        - generic [ref=e59]:
+          - generic [ref=e60]: 복습 진행 중
+          - button "코드 복사" [ref=e61] [cursor=pointer]
+      - generic [ref=e62]:
+        - generic [ref=e64]:
+          - generic [ref=e65]:
+            - generic [ref=e66]: 사회
+            - generic [ref=e67]: 보통
+            - generic [ref=e68]: 문제 3
+          - 'heading "복습용으로 수정한 법 기관 문제: 법을 만드는 곳은 어디일까요?" [level=2] [ref=e254]'
+          - generic [ref=e72]:
+            - generic [ref=e73]: 학생 화면에 보이는 답안 입력칸
+            - generic [ref=e74]:
+              - textbox "학생은 여기에 답을 입력해요" [disabled] [ref=e75]
+              - button "정답 제출 →" [disabled] [ref=e76]:
+                - text: 정답 제출
+                - generic [ref=e77]: →
+          - generic [ref=e78]: 학생들이 답을 입력하면 자동으로 다음 문제로 넘어가요.
+          - generic [ref=e79]:
+            - button "다음 문제 건너뛰기 →" [active] [ref=e80] [cursor=pointer]
+            - button "복습 멈추기" [ref=e81] [cursor=pointer]
+        - complementary [ref=e82]:
+          - generic [ref=e83]:
+            - generic [ref=e84]:
+              - generic [ref=e85]:
+                - paragraph [ref=e86]: 실시간 관리
+                - heading "교실 컨트롤타워" [level=2] [ref=e87]
+              - generic [ref=e88]: 1/1명 접속
+            - generic [ref=e89]:
+              - generic [ref=e90]:
+                - generic [ref=e91]: 누적 풀이
+                - generic [ref=e92]: "0"
+                - generic [ref=e93]: 문제
+              - generic [ref=e94]:
+                - generic [ref=e95]: 맞힌 문제
+                - generic [ref=e96]: "0"
+                - generic [ref=e97]: 문제
+              - generic [ref=e98]:
+                - generic [ref=e99]: 전체 정답률
+                - generic [ref=e100]: 0.0%
+              - generic [ref=e101]:
+                - generic [ref=e102]: 진행 문제
+                - generic [ref=e103]: 문제 3
+            - paragraph [ref=e104]: 학생별 자세한 성적과 순위는 아래 전체 성적표에서 확인하세요.
+            - button "문제 관리 닫기" [ref=e105] [cursor=pointer]
+      - generic [ref=e106]:
+        - generic [ref=e107]:
+          - generic [ref=e108]:
+            - paragraph [ref=e109]: 전체 학생 현황
+            - heading "전체 등수 및 정답률" [level=2] [ref=e110]
+          - generic [ref=e111]:
+            - text: 정렬 기준
+            - combobox "정렬 기준" [ref=e112]:
+              - option "점수 높은 순" [selected]
+              - option "정답률 높은 순"
+        - table [ref=e114]:
+          - rowgroup [ref=e115]:
+            - row "등수 이름 점수 푼 문제 맞힌 문제 정답률" [ref=e116]:
+              - columnheader "등수" [ref=e117]
+              - columnheader "이름" [ref=e118]
+              - columnheader "점수" [ref=e119]
+              - columnheader "푼 문제" [ref=e120]
+              - columnheader "맞힌 문제" [ref=e121]
+              - columnheader "정답률" [ref=e122]
+          - rowgroup [ref=e123]:
+            - row "1 문제은행 학생 0 0 0 —" [ref=e255]:
+              - cell "1" [ref=e256]:
+                - generic [ref=e257]: "1"
+              - cell "문제은행 학생" [ref=e258]
+              - cell "0" [ref=e259]
+              - cell "0" [ref=e260]
+              - cell "0" [ref=e261]
+              - cell "—" [ref=e262]:
+                - generic [ref=e263]: —
+      - generic [ref=e133]:
+        - generic [ref=e134]:
+          - generic [ref=e135]:
+            - paragraph [ref=e136]: 시작 전 문제 구성
+            - heading "이번 복습 문제은행" [level=2] [ref=e137]
+          - button "닫기" [ref=e138] [cursor=pointer]
+        - paragraph [ref=e139]: 복습이 진행 중이거나 종료되어 문제 구성이 잠겼어요. 다음 방을 만들 때 다시 편집할 수 있어요.
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - heading "출제 문제 목록" [level=3] [ref=e143]
+            - generic [ref=e144]: 6문제
+          - generic [ref=e145]:
+            - paragraph [ref=e146]: 2 / 6개 선택됨
+            - generic [ref=e147]:
+              - button "모두 선택" [ref=e148] [cursor=pointer]
+              - button "선택 해제" [ref=e149] [cursor=pointer]
+          - generic [ref=e150]:
+            - article [ref=e151]:
+              - generic [ref=e152]:
+                - generic [ref=e153]:
+                  - checkbox "출제" [checked] [ref=e154]
+                  - generic [ref=e155]: 출제
+                - generic [ref=e156]: "1"
+                - generic [ref=e157]: 사회
+                - generic [ref=e158]: 보통
+              - 'heading "복습용으로 수정한 법 기관 문제: 법을 만드는 곳은 어디일까요?" [level=4] [ref=e159]'
+              - paragraph [ref=e160]:
+                - generic [ref=e161]: 정답
+                - text: 국회
+              - paragraph [ref=e162]: 국회는 국민이 뽑은 국회의원들이 법을 만들고 나라의 중요한 일을 논의하는 기관이에요.
+              - generic [ref=e163]:
+                - button "수정" [ref=e164] [cursor=pointer]
+                - button "삭제" [ref=e165] [cursor=pointer]
+            - article [ref=e166]:
+              - generic [ref=e167]:
+                - generic [ref=e168]:
+                  - checkbox "출제" [ref=e169]
+                  - generic [ref=e170]: 출제
+                - generic [ref=e171]: "2"
+                - generic [ref=e172]: 사회
+                - generic [ref=e173]: 보통
+              - heading "우리나라에서 대통령을 뽑는 선거에 참여할 수 있는 나이는 만 몇 살부터일까요?" [level=4] [ref=e174]
+              - paragraph [ref=e175]:
+                - generic [ref=e176]: 정답
+                - text: 18세
+              - paragraph [ref=e177]: 대한민국 국민은 만 18세부터 대통령 선거에 참여할 수 있어요.
+              - generic [ref=e178]:
+                - button "수정" [ref=e179] [cursor=pointer]
+                - button "삭제" [ref=e180] [cursor=pointer]
+            - article [ref=e181]:
+              - generic [ref=e182]:
+                - generic [ref=e183]:
+                  - checkbox "출제" [ref=e184]
+                  - generic [ref=e185]: 출제
+                - generic [ref=e186]: "3"
+                - generic [ref=e187]: 사회
+                - generic [ref=e188]: 보통
+              - heading "물건의 가격이 오를 때 사람들이 그 물건을 더 적게 사려는 현상과 가장 관계있는 것은?" [level=4] [ref=e189]
+              - paragraph [ref=e190]:
+                - generic [ref=e191]: 정답
+                - text: 수요와 공급
+              - paragraph [ref=e192]: 가격과 사람들이 사려는 양은 수요와 공급의 영향을 받아요.
+              - generic [ref=e193]:
+                - button "수정" [ref=e194] [cursor=pointer]
+                - button "삭제" [ref=e195] [cursor=pointer]
+            - article [ref=e196]:
+              - generic [ref=e197]:
+                - generic [ref=e198]:
+                  - checkbox "출제" [ref=e199]
+                  - generic [ref=e200]: 출제
+                - generic [ref=e201]: "4"
+                - generic [ref=e202]: 사회
+                - generic [ref=e203]: 보통
+              - heading "지도에서 실제 거리를 줄여 나타낼 때 사용하는 약속은 무엇일까요?" [level=4] [ref=e204]
+              - paragraph [ref=e205]:
+                - generic [ref=e206]: 정답
+                - text: 축척
+              - paragraph [ref=e207]: 축척은 지도 위 거리와 실제 거리의 비율을 나타내요.
+              - generic [ref=e208]:
+                - button "수정" [ref=e209] [cursor=pointer]
+                - button "삭제" [ref=e210] [cursor=pointer]
+            - article [ref=e211]:
+              - generic [ref=e212]:
+                - generic [ref=e213]:
+                  - checkbox "출제" [ref=e214]
+                  - generic [ref=e215]: 출제
+                - generic [ref=e216]: "5"
+                - generic [ref=e217]: 사회
+                - generic [ref=e218]: 보통
+              - heading "우리나라에서 지방자치단체의 장을 뽑는 선거는 무엇일까요?" [level=4] [ref=e219]
+              - paragraph [ref=e220]:
+                - generic [ref=e221]: 정답
+                - text: 지방 선거
+              - paragraph [ref=e222]: 지방 선거에서는 시장, 도지사처럼 지역의 일을 맡을 사람을 뽑아요.
+              - generic [ref=e223]:
+                - button "수정" [ref=e224] [cursor=pointer]
+                - button "삭제" [ref=e225] [cursor=pointer]
+            - article [ref=e226]:
+              - generic [ref=e227]:
+                - generic [ref=e228]:
+                  - checkbox "출제" [checked] [ref=e229]
+                  - generic [ref=e230]: 출제
+                - generic [ref=e231]: "6"
+                - generic [ref=e232]: 사회
+                - generic [ref=e233]: 보통
+                - generic [ref=e234]: 직접 추가
+              - 'heading "선생님 추가 문제: 9에서 4를 빼면 얼마일까요?" [level=4] [ref=e235]'
+              - paragraph [ref=e236]:
+                - generic [ref=e237]: 정답
+                - text: "5"
+              - paragraph [ref=e238]: 선생님이 직접 관리한 문제예요.
+              - generic [ref=e239]:
+                - button "수정" [ref=e240] [cursor=pointer]
+                - button "삭제" [ref=e241] [cursor=pointer]
+      - paragraph [ref=e242]: 답은 한 문제에 한 번만 제출할 수 있어요. 같이 도전해 봐요!
+      - alert [ref=e243]
+  - contentinfo [ref=e51]: 오늘의 복습도 우리답게, 같이풀자!

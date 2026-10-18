@@ -1,0 +1,64 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "같이풀자 처음으로" [ref=e3] [cursor=pointer]:
+      - /url: /teacher
+      - img [ref=e5]
+      - generic [ref=e7]: 같이풀자!
+    - generic [ref=e8]:
+      - generic [ref=e9]: 선생님 관리
+      - generic [ref=e12]: 실시간 연결됨
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]: ✦ 6학년 오늘의 복습
+        - heading "같이 풀면 더 재미있어!" [level=1] [ref=e17]:
+          - text: 같이 풀면
+          - text: 더 재미있어!
+        - paragraph [ref=e18]:
+          - text: 사회와 수학, 친구들과 함께 풀고
+          - text: 실시간으로 점수를 모아봐요.
+        - generic "복습 과목" [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]: ＋
+            - text: 수학
+          - generic [ref=e22]:
+            - generic [ref=e23]: ◎
+            - text: 사회
+          - generic [ref=e24]:
+            - text: 연속 정답 보너스
+            - generic [ref=e25]: "+0.5"
+        - generic: ✳
+        - generic: ⌁
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - img [ref=e29]
+          - generic [ref=e32]:
+            - heading "복습 교실에 들어가요" [level=2] [ref=e33]
+            - paragraph [ref=e34]: 선생님은 새 교실을, 학생은 코드를 입력해요.
+        - generic [ref=e35]:
+          - generic [ref=e36]: 선생님 이름
+          - textbox "선생님 이름" [ref=e37]:
+            - /placeholder: "예: 김선생님"
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - text: 과목
+              - combobox "과목" [ref=e40]:
+                - option "사회 + 수학 섞기" [selected]
+                - option "사회만"
+                - option "수학만"
+            - generic [ref=e41]:
+              - text: 난이도
+              - combobox "난이도" [ref=e42]:
+                - option "보통 + 어려움" [selected]
+                - option "보통만"
+                - option "어려움만"
+          - button "새 교실 만들기 →" [ref=e43] [cursor=pointer]:
+            - text: 새 교실 만들기
+            - generic [ref=e44]: →
+          - paragraph [ref=e45]: 학생들과 공유할 교실 코드가 만들어져요.
+        - alert [ref=e46]
+      - generic [ref=e47]:
+        - generic [ref=e48]: 01 이름 정하기
+        - generic [ref=e50]: 02 코드로 모이기
+        - generic [ref=e52]: 03 함께 도전!
+  - contentinfo [ref=e53]: 오늘의 복습도 우리답게, 같이풀자!

@@ -1,0 +1,55 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "같이풀자 처음으로" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - img [ref=e5]
+      - generic [ref=e7]: 같이풀자!
+    - generic [ref=e10]: 실시간 연결됨
+  - main [ref=e11]:
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e14]: ✦ 6학년 오늘의 복습
+        - heading "같이 풀면 더 재미있어!" [level=1] [ref=e15]:
+          - text: 같이 풀면
+          - text: 더 재미있어!
+        - paragraph [ref=e16]:
+          - text: 사회와 수학, 친구들과 함께 풀고
+          - text: 실시간으로 점수를 모아봐요.
+        - generic "복습 과목" [ref=e17]:
+          - generic [ref=e18]:
+            - generic [ref=e19]: ＋
+            - text: 수학
+          - generic [ref=e20]:
+            - generic [ref=e21]: ◎
+            - text: 사회
+          - generic [ref=e22]:
+            - text: 연속 정답 보너스
+            - generic [ref=e23]: "+0.5"
+        - generic: ✳
+        - generic: ⌁
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - img [ref=e27]
+          - generic [ref=e30]:
+            - heading "복습 교실에 들어가요" [level=2] [ref=e31]
+            - paragraph [ref=e32]: 선생님은 새 교실을, 학생은 코드를 입력해요.
+        - tablist "참여 방법" [ref=e33]:
+          - tab "학생으로 참여" [selected] [ref=e34] [cursor=pointer]
+          - tab "선생님 방 만들기" [ref=e35] [cursor=pointer]
+        - generic [ref=e36]:
+          - generic [ref=e37]: 내 이름
+          - textbox "내 이름" [ref=e38]:
+            - /placeholder: "예: 민지"
+          - generic [ref=e39]: 교실 코드
+          - textbox "교실 코드" [ref=e40]:
+            - /placeholder: 숫자 6자리
+          - button "교실 입장하기 →" [ref=e41] [cursor=pointer]:
+            - text: 교실 입장하기
+            - generic [ref=e42]: →
+          - paragraph [ref=e43]: 선생님에게 받은 6자리 코드를 입력해 주세요.
+        - alert [ref=e44]
+      - generic [ref=e45]:
+        - generic [ref=e46]: 01 이름 정하기
+        - generic [ref=e48]: 02 코드로 모이기
+        - generic [ref=e50]: 03 함께 도전!
+  - contentinfo [ref=e51]: 오늘의 복습도 우리답게, 같이풀자!
